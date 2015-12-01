@@ -1,0 +1,11 @@
+{% extends 'slackin/base.html' %}
+
+{% block title %}Join {{ slackin.team.name }} on Slack{% endblock title %}
+
+{% block styles %}
+    {% include 'slackin/invite/styles.html' %}
+{% endblock styles %}
+
+{% block content %}
+    {% include 'slackin/invite/content.html' %}
+{% endblock content %}

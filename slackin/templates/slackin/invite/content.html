@@ -1,0 +1,21 @@
+<div class="slackin-content">
+    <img src="{{ slackin.team.image }}">
+
+    <h1>Join {{ slackin.team.name }} on Slack</h1>
+    <p><strong>{{ slackin.users_online }}</strong> users online now of <strong>{{ slackin.users_total }}</strong> registered.</p>
+
+    {% if user.is_active %}
+        {% if slackin_invite_form_success %}
+            <p class="info">Invited {{ request.POST.email_address }}</p>
+        {% else %}
+            <form action="{{ request.path }}" method="post">
+                {% csrf_token %}
+                <div>{{ slackin_invite_form.email_address }}</div>
+                {{ slackin_invite_form.email_address.errors }}
+                <button type="submit">Join</button>
+            </form>
+        {% endif %}
+    {% else %}
+        <p class="info">Log in to join the discussion.</p>
+    {% endif %}
+</div>

@@ -1,0 +1,4 @@
+include LICENSE
+include README.rst
+recursive-include slackin/templates *
+recursive-include docs *
