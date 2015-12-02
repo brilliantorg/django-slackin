@@ -17,7 +17,8 @@ class Slack(object):
         self.token = token
         self.subdomain = subdomain
 
-    def api_request(self, api, data={}):
+    def api_request(self, api, data=None):
+        data = data or {}
         url = 'https://{}.slack.com/api/{}'.format(self.subdomain, api)
         data['token'] = self.token
         response = requests.post(url, data=data)
