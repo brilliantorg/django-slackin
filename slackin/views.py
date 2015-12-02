@@ -62,7 +62,7 @@ class SlackinInviteView(SlackinMixin, View):
         return self.response()
 
     def post(self, request):
-        if settings.SLACKIN_LOGIN_REQUIRED and not required.user.is_authenticated():
+        if settings.SLACKIN_LOGIN_REQUIRED and not request.user.is_authenticated():
             return HttpResponseRedirect(self.get_redirect_url())
 
         self.context = self.get_generic_context()
