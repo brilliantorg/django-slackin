@@ -57,3 +57,17 @@ from slackin.signals import sent_invite_to_email_address
 def my_invite_handler(sender, email_address, **kwargs):
     print 'SIGNAL RECEIVED: {}'.format(email_address)
 ```
+
+## Custom templates
+
+To use custom templates, add the either of following files to your app's template directory depending on what you want to customize.
+- `slackin/invite/page.html`: the surrounding `body`, `head`, and inlined styles
+- `slackin/invite/content.html`: the text and form
+
+Templates have access to the following slackin-specific context variables:
+- `slackin.team`: slack team info such as name, icons, etc
+- `slackin.users`: full list of team members
+- `slackin.users_online`: number of team members currently online
+- `slackin.users_total`: total number of team members
+- `slackin_invite_form`: invite form object
+- `slackin_invite_form_success`: `True` if `slackin_invite_form.is_valid()`
