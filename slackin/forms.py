@@ -12,6 +12,8 @@ class SlackinInviteForm(forms.Form):
 
         slack = Slack(token=settings.SLACKIN_TOKEN, subdomain=settings.SLACKIN_SUBDOMAIN)
         try:
+            # send the invite here (instead of save()) so that API errors (already invited, already
+            # in team) can be presented as validation errors
             invitation = slack.invite_user(email_address=email_address,
                                            ultra_restricted=settings.SLACKIN_ULTRA_RESTRICTED_INVITES)
         except SlackError as err:
