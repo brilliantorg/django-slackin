@@ -43,7 +43,7 @@ class SlackinInviteView(SlackinMixin, View):
     def get(self, request):
         self.context = self.get_generic_context()
 
-        email_address = 'test@example.com'
+        email_address = ''
         if self.request.user.is_active:
             email_address = self.request.user.email
         self.context['slackin_invite_form'] = SlackinInviteForm(initial={'email_address': email_address})
