@@ -1,4 +1,6 @@
 from django.utils.functional import cached_property
+from django.http import HttpResponseRedirect
+from django.core.urlresolvers import reverse
 
 from django.shortcuts import render_to_response
 from django.template import RequestContext
@@ -35,12 +37,21 @@ class SlackinInviteView(SlackinMixin, View):
             'slackin': self.slackin_context,
         }
 
+    def get_redirect_url(self):
+        if '/' in settings.SLACKIN_LOGIN_REDIRECT:
+            return settings.SLACKIN_LOGIN_REDIRECT
+        else:
+            return reverse(settings.SLACKIN_LOGIN_REDIRECT)
+
     def response(self):
         return render_to_response(template_name=self.template_name,
                                   context=self.context,
                                   context_instance=RequestContext(self.request))
 
     def get(self, request):
+        if settings.SLACKIN_LOGIN_REQUIRED and not request.user.is_authenticated():
+            return HttpResponseRedirect(self.get_redirect_url())
+
         self.context = self.get_generic_context()
 
         email_address = ''
@@ -51,6 +62,9 @@ class SlackinInviteView(SlackinMixin, View):
         return self.response()
 
     def post(self, request):
+        if settings.SLACKIN_LOGIN_REQUIRED and not required.user.is_authenticated():
+            return HttpResponseRedirect(self.get_redirect_url())
+
         self.context = self.get_generic_context()
         invite_form = SlackinInviteForm(self.request.POST)
         if invite_form.is_valid():

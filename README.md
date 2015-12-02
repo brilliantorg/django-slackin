@@ -34,6 +34,10 @@ SLACKIN_TOKEN = 'YOUR-SLACK-TOKEN' # create a token at https://api.slack.com/web
 SLACKIN_SUBDOMAIN = 'your-team'    # if https://your-team.slack.com
 
 # optional settings
+SLACKIN_LOGIN_REQUIRED = True # Redirect if user is not logged in. If False, the invite form will
+                              #   still be hidden for logged-out users.
+SLACKIN_LOGIN_REDIRECT = '/'  # Redirect URL for logged-out users; can be a URL or
+                              #   URLconf name (i.e. 'my_login_page')
 SLACKIN_ULTRA_RESTRICTED_INVITES = True # only available for paid accounts
 SLACKIN_SHOW_EMAIL_FORM = True          # show/hide email form
 ```
