@@ -8,13 +8,13 @@ os.chdir(os.path.normpath(os.path.join(os.path.abspath(__file__), os.pardir)))
 
 setup(
     name='django-slackin',
-    version='0.1',
+    version='0.0.1',
     packages=['slackin'],
     include_package_data=True,
     license='MIT License',
-    description='A Django port of https://github.com/rauchg/slackin',
+    description='Django integration with a public slack organization (inspired by https://github.com/rauchg/slackin)',
     long_description=README,
-    url='',
+    url='https://github.com/brilliantorg/django-slackin',
     author='Caleb Rash',
     author_email='caleb@brilliant.org',
     classifiers=[
