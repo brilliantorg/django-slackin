@@ -1,7 +1,8 @@
 <div class="slackin-content">
     {% block invite_header %}
-        <img src="{{ slackin.team.image }}">
-
+        {% if slackin.team.image %}
+            <img src="{{ slackin.team.image }}">
+        {% endif %}
         <h1>Join {{ slackin.team.name }} on Slack</h1>
         <p><strong>{{ slackin.users_online }}</strong> users online now of <strong>{{ slackin.users_total }}</strong> registered.</p>
     {% endblock invite_header %}
