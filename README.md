@@ -60,7 +60,7 @@ def my_invite_handler(sender, email_address, **kwargs):
 
 ## Custom templates
 
-To use custom templates, add the either of following files to your app's template directory depending on what you want to customize.
+To use custom templates, add the either of following files to your app's template directory depending on what you want to customize. See [templates/slackin](https://github.com/brilliantorg/django-slackin/tree/master/slackin/templates/slackin) for more details.
 - `slackin/invite/page.html`: the surrounding `body`, `head`, and inlined styles
 - `slackin/invite/content.html`: the text and form
 
