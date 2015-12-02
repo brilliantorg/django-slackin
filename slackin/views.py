@@ -29,7 +29,6 @@ class SlackinMixin(object):
 
 class SlackinInviteView(SlackinMixin, View):
     template_name = 'slackin/invite/page.html'
-    context = {}
 
     def get_generic_context(self):
         return {
