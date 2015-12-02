@@ -30,7 +30,6 @@ class Slack(object):
             raise SlackError('Slack: Invalid API request')
 
     def handle_error(self, error_code, data):
-        print 'ERROR1', error_code, data
         # generic errors
         if error_code == 'not_authed':
             raise SlackError('Missing Slack token. Please contact an administrator.')
