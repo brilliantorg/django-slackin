@@ -1,7 +1,11 @@
 import requests
 import json
 
-from slackin.signals import sent_invite_to_email_address
+from slackin.signals import (
+    email_address_already_invited,
+    email_address_already_in_team,
+    sent_invite_to_email_address
+)
 
 
 class SlackError(Exception):
@@ -26,6 +30,7 @@ class Slack(object):
             raise SlackError('Slack: Invalid API request')
 
     def handle_error(self, error_code):
+        # generic errors
         if error_code == 'not_authed':
             raise SlackError('Missing Slack token. Please contact an administrator.')
         elif error_code == 'invalid_auth':
@@ -37,13 +42,17 @@ class Slack(object):
         elif error_code == 'missing_scope':
             raise SlackError('Slack token is for a non-admin user. Please contact an administrator.')
         elif error_code == 'already_invited':
+            email_address_already_invited.send(sender=self.__class__, email_address=email_address)
             raise SlackError('That email address has already been invited.')
         elif error_code == 'already_in_team':
+            email_address_already_in_team.send(sender=self.__class__, email_address=email_address)
             raise SlackError('That email address is already in this team.')
         elif error_code == 'paid_teams_only':
             raise SlackError('{} {}'.format(
                 'Ultra-restricted invites are only available for paid accounts.',
                 'Please contact an administrator.'))
+
+        # default error
         else:
             raise SlackError('Unknown error: {}'.format(error_code))
 
@@ -51,9 +60,7 @@ class Slack(object):
         return self.api_request('team.info')
 
     def get_users(self):
-        return self.api_request('users.list', data={
-            'presence': 1
-        })
+        return self.api_request('users.list', data={'presence': 1})
 
     def invite_user(self, email_address, ultra_restricted=False):
         response = self.api_request('users.admin.invite', data={
