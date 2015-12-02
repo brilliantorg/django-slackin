@@ -24,12 +24,13 @@ class Slack(object):
         if response.status_code == 200:
             response_dict = response.json()
             if 'error' in response_dict:
-                self.handle_error(response_dict['error'])
+                self.handle_error(response_dict['error'], data)
             return response_dict
         else:
             raise SlackError('Slack: Invalid API request')
 
-    def handle_error(self, error_code):
+    def handle_error(self, error_code, data):
+        print 'ERROR1', error_code, data
         # generic errors
         if error_code == 'not_authed':
             raise SlackError('Missing Slack token. Please contact an administrator.')
@@ -42,11 +43,19 @@ class Slack(object):
         elif error_code == 'missing_scope':
             raise SlackError('Slack token is for a non-admin user. Please contact an administrator.')
         elif error_code == 'already_invited':
-            email_address_already_invited.send(sender=self.__class__, email_address=email_address)
-            raise SlackError('That email address has already been invited.')
+            if 'email' in data:
+                email_address = data['email']
+                email_address_already_invited.send(sender=self.__class__, email_address=email_address)
+                raise SlackError('{} has already been invited.'.format(email_address))
+            else:
+                raise SlackError('That email address has already been invited.')
         elif error_code == 'already_in_team':
-            email_address_already_in_team.send(sender=self.__class__, email_address=email_address)
-            raise SlackError('That email address is already in this team.')
+            if 'email' in data:
+                email_address = data['email']
+                email_address_already_in_team.send(sender=self.__class__, email_address=email_address)
+                raise SlackError('{} is already in this team.'.format(email_address))
+            else:
+                raise SlackError('That email address is already in this team.')
         elif error_code == 'paid_teams_only':
             raise SlackError('{} {}'.format(
                 'Ultra-restricted invites are only available for paid accounts.',
