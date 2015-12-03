@@ -58,8 +58,8 @@ To listen for a signal:
 from slackin.signals import sent_invite_to_email_address
 
 @receiver(sent_invite_to_email_address)
-def my_invite_handler(sender, email_address, **kwargs):
-    print 'SIGNAL RECEIVED: {}'.format(email_address)
+def my_invite_handler(sender, email_address, user **kwargs):
+    print 'SIGNAL RECEIVED: {}, {}'.format(email_address, user)
 ```
 
 ## Custom templates

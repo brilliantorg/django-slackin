@@ -81,24 +81,25 @@ class SlackinInviteView(SlackinMixin, View):
                                   context_instance=RequestContext(self.request))
 
     def get(self, request):
-        if settings.SLACKIN_LOGIN_REQUIRED and not request.user.is_authenticated():
+        if settings.SLACKIN_LOGIN_REQUIRED and not self.request.user.is_authenticated():
             return HttpResponseRedirect(self.get_redirect_url())
 
         self.context = self.get_generic_context()
 
         email_address = ''
-        if self.request.user.is_active:
+        if self.request.user.is_authenticated():
             email_address = self.request.user.email
-        self.context['slackin_invite_form'] = SlackinInviteForm(initial={'email_address': email_address})
-
+        self.context['slackin_invite_form'] = SlackinInviteForm(
+            initial={'email_address': email_address},
+            user=self.request.user)
         return self.response()
 
     def post(self, request):
-        if settings.SLACKIN_LOGIN_REQUIRED and not request.user.is_authenticated():
+        if settings.SLACKIN_LOGIN_REQUIRED and not self.request.user.is_authenticated():
             return HttpResponseRedirect(self.get_redirect_url())
 
         self.context = self.get_generic_context()
-        invite_form = SlackinInviteForm(self.request.POST)
+        invite_form = SlackinInviteForm(self.request.POST, user=self.request.user)
         if invite_form.is_valid():
             self.context['slackin_invite_form_success'] = True
         self.context['slackin_invite_form'] = invite_form
