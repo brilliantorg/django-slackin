@@ -44,7 +44,9 @@ class SlackinMixin(object):
     def _clean_users(self, users):
         cleaned_users = []
         for user in users:
-            if user['id'] != 'USLACKBOT' and not user['is_bot'] and not user['deleted']:
+            if (user.get('id') != 'USLACKBOT'
+                    and not user.get('is_bot', False)
+                    and not user.get('deleted', False)):
                 cleaned_users.append(user)
         return cleaned_users
 
