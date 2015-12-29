@@ -41,12 +41,20 @@ class SlackinMixin(object):
             })
         return _team_context['data']
 
+    def _clean_users(self, users):
+        cleaned_users = []
+        for user in users:
+            if user['id'] != 'USLACKBOT' and not user['is_bot'] and not user['deleted']:
+                cleaned_users.append(user)
+        return cleaned_users
+
     def _get_users_context(self, slack_instance):
         global _users_context, _users_context_timeout
         if self._context_expired(_users_context, _users_context_timeout):
             slack_user_response = slack_instance.get_users()
-            users_total = slack_user_response['members']
-            users_online = [user for user in users_total if user['presence'] == 'active']
+            users_total = self._clean_users(slack_user_response['members'])
+            users_online = [user for user in users_total
+                            if 'presence' in user and user['presence'] == 'active']
             _users_context = self._create_context({
                 'users': users_total,
                 'users_online': len(users_online),
