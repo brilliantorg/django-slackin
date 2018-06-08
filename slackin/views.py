@@ -2,7 +2,7 @@ import time
 
 from django.utils.functional import cached_property
 from django.http import HttpResponseRedirect
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 
 from django.shortcuts import render_to_response
 from django.template import RequestContext
