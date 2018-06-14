@@ -4,8 +4,7 @@ from django.utils.functional import cached_property
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 
-from django.shortcuts import render_to_response
-from django.template import RequestContext
+from django.shortcuts import render
 
 from django.views.generic.base import View
 
@@ -86,9 +85,7 @@ class SlackinInviteView(SlackinMixin, View):
             return reverse(settings.SLACKIN_LOGIN_REDIRECT)
 
     def response(self):
-        return render_to_response(template_name=self.template_name,
-                                  context=self.context,
-                                  context_instance=RequestContext(self.request))
+        return render(self.request, template_name=self.template_name, context=self.context)
 
     def get(self, request):
         if settings.SLACKIN_LOGIN_REQUIRED and not self.request.user.is_authenticated:
